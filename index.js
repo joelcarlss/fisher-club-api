@@ -4,8 +4,8 @@ function respond (req, res, next) {
   res.send('hello ' + req.params.name)
   next()
 }
-
 var server = restify.createServer()
+require('./routes/server')(server)
 server.get('/hello/:name', respond)
 server.head('/hello/:name', respond)
 

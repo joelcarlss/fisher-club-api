@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "server": "nodemon index.js"
   },
   "repository": {
     "type": "git",
@@ -20,8 +21,10 @@
     "mongoose": "^5.4.6",
     "mongoose-string-query": "^0.2.7",
     "mongoose-timestamp": "^0.6.0",
+    "nodemon": "^1.18.10",
     "restify": "^7.6.0",
     "restify-errors": "^6.1.1",
     "restify-plugins": "^1.6.0"
-  }
+  },
+  "devDependencies": {}
 }
