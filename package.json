@@ -18,7 +18,8 @@
   },
   "homepage": "https://github.com/joelcarlss/RESTAPI#readme",
   "dependencies": {
-    "mongoose": "^5.4.6",
+    "jsonwebtoken": "^8.4.0",
+    "mongoose": "^5.4.13",
     "mongoose-string-query": "^0.2.7",
     "mongoose-timestamp": "^0.6.0",
     "nodemon": "^1.18.10",
