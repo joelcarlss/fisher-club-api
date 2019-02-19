@@ -4,7 +4,7 @@ const mongoose = require('mongoose')
 
 const username = 'root'
 const password = 'herrgris5'
-const CONNECTION_STRING = `mongodb://${username}:${password}<dbpassword>@ds139435.mlab.com:39435/smarthome`
+const CONNECTION_STRING = `mongodb://${username}:${password}@ds139435.mlab.com:39435/smarthome`
 
 module.exports = function () {
   mongoose.connect(CONNECTION_STRING)
