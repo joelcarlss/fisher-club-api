@@ -1,15 +1,24 @@
-require('dotenv').config()
-require('../model/mongooseWrapper')
-const jwt = require('jsonwebtoken')
+let { authenticateUser, createUser } = require('../model/authentication')
 
 module.exports = (server) => {
-  server.post('/user/login', (req, res, next) => {
+  server.post('/user/login', async (req, res, next) => {
     let {username, password} = req.body
-    let token = jwt.sign({username}, process.env.SECRET, {
-      expiresIn: 2400
-    })
+    try {
+      let token = await authenticateUser(username, password)
+      res.send(token)
+    } catch ({message}) {
+      console.log(message)
+      res.send(400, message)
+    }
+    next()
+  })
 
-    res.send({token})
+  server.post('/user/create', (req, res, next) => {
+    let {username, password} = req.body
+
+    createUser(username, password)
+    .then(res.send('User Created'))
+    .catch(console.log)
     next()
   })
 }

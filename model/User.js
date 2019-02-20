@@ -34,25 +34,36 @@ userData.pre('save', function (next) {
   })
 })
 
+// // Authentication. Controlls user credentials. Throws error if wrong
+// userData.statics.authenticate = (username, password, callback) => {
+//   User.findOne({ username: username })
+//     .exec((err, user) => {
+//       if (err) {
+//         return callback(err)
+//       } else if (!user) {
+//         let err = new Error('User not found.')
+//         err.status = 401
+//         return callback(err)
+//       }
+//       bcrypt.compare(password, user.password, (err, result) => {
+//         if (result) {
+//           return callback(null, user)
+//         } else {
+//           return callback(err)
+//         }
+//       })
+//     })
+// }
+
 // Authentication. Controlls user credentials. Throws error if wrong
-userData.statics.authenticate = (username, password, callback) => {
-  User.findOne({ username: username })
-    .exec((err, user) => {
-      if (err) {
-        return callback(err)
-      } else if (!user) {
-        let err = new Error('User not found.')
-        err.status = 401
-        return callback(err)
-      }
-      bcrypt.compare(password, user.password, (err, result) => {
-        if (result) {
-          return callback(null, user)
-        } else {
-          return callback(err)
-        }
-      })
-    })
+userData.statics.authenticate = async (username, password) => {
+  let user = await User.findOne({ username: username })
+  let isCorrectPassword = await bcrypt.compare(password, user.password)
+  if (!isCorrectPassword) {
+    throw new Error('Username or password is incorrect')
+  } else {
+    return user
+  }
 }
 
 // Validates length of password. Minimum 8 characters
