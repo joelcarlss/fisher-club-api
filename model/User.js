@@ -59,6 +59,7 @@ userData.pre('save', function (next) {
 userData.statics.authenticate = async (username, password) => {
   let user = await User.findOne({ username: username })
   let isCorrectPassword = await bcrypt.compare(password, user.password)
+  console.log(user)
   if (!isCorrectPassword) {
     throw new Error('Username or password is incorrect')
   } else {

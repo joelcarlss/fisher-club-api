@@ -1,7 +1,11 @@
 module.exports = (server) => {
-  function response (req, res, next) {
+  server.get('/hej/:name', function (req, res, next) {
     res.send('hello ' + req.params.name)
     next()
-  }
-  server.get('/hej/:name', response)
+  })
+
+  server.get('/', (res, next) => {
+    res.send('hello')
+    next()
+  })
 }

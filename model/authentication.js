@@ -1,6 +1,7 @@
 require('dotenv').config()
 
 const jwt = require('jsonwebtoken')
+
 const User = require('./User')
 
 function createUser (username, password) {
@@ -11,15 +12,22 @@ function createUser (username, password) {
 }
 
 async function authenticateUser (username, password) {
-  let user = await User.authenticate(username, password)
-  let token = jwt.sign({username: user.username, id: user.id}, process.env.SECRET, {
-    expiresIn: 2400
-  })
-  return token
+  try {
+    let user = await User.authenticate(username, password)
+    let token = jwt.sign({username: user.username, id: user.id}, process.env.SECRET, {
+      expiresIn: 2400
+    })
+    return token
+  } catch (error) {
+    throw new Error('Username or password is incorrect')
+  }
 }
 
-function readToken () {
-
+// Takes JsonWebToken, removes bearer, returns decoded data or error.
+function readToken (data) {
+  const token = data.split(' ')[1]
+  const decoded = jwt.verify(token, process.env.SECRET)
+  return decoded
 }
 
 function logoutUser () {
@@ -29,5 +37,6 @@ function logoutUser () {
 module.exports = {
   createUser,
   authenticateUser,
+  readToken,
   logoutUser
 }
