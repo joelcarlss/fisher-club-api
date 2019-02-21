@@ -39,10 +39,14 @@ let FishSchema = new Schema({
     type: Number,
     required: true
   },
+  day: {
+    type: Number,
+    required: true
+  },
   createdAt: {
     type: Date,
     default: Date.now
   }
 })
 
-module.exports = mongoose.model('Fish', FishSchema)
+module.exports = mongoose.model('fish', FishSchema)
