@@ -5,7 +5,7 @@ const mongoose = require('mongoose')
 let Schema = mongoose.Schema
 
 // User schema for mongoDB connection
-let userData = new Schema({
+let userSchema = new Schema({
   username: {
     type: String,
     required: true,
@@ -22,7 +22,7 @@ let userData = new Schema({
 })
 
 // For saving Schema. Hashes and salts password.
-userData.pre('save', function (next) {
+userSchema.pre('save', function (next) {
   var user = this
 
   bcrypt.hash(user.password, 10, function (err, hash) {
@@ -56,7 +56,7 @@ userData.pre('save', function (next) {
 // }
 
 // Authentication. Controlls user credentials. Throws error if wrong
-userData.statics.authenticate = async (username, password) => {
+userSchema.statics.authenticate = async (username, password) => {
   let user = await User.findOne({ username: username })
   let isCorrectPassword = await bcrypt.compare(password, user.password)
   console.log(user)
@@ -68,10 +68,10 @@ userData.statics.authenticate = async (username, password) => {
 }
 
 // Validates length of password. Minimum 8 characters
-userData.path('password').validate(function (password) {
+userSchema.path('password').validate(function (password) {
   return password.length >= 8
 })
 
-let User = mongoose.model('userData', userData)
+let User = mongoose.model('user', userSchema)
 
 module.exports = User

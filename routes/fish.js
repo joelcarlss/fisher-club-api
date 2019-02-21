@@ -1,7 +1,7 @@
 let { readToken } = require('../model/authentication')
 
 module.exports = (server) => {
-  server.get('/fish', (res, next) => {
+  server.get('/fish', (req, res, next) => {
     res.send('hello')
     next()
   })
