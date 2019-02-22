@@ -36,6 +36,11 @@ module.exports = {
       rel: 'update.fish',
       href: '/fish/:id',
       type: 'PUT'
+    },
+    {
+      rel: 'delete.fish',
+      href: '/fish/:id',
+      type: 'DELETE'
     }
   ],
   user: [

@@ -1,8 +1,19 @@
 let { readToken } = require('../model/authentication')
 let { getFish } = require('../model/utility')
+let { fish } = require('../utils/links')
+const Payload = require('../utils/Payload')
+
 let { saveFish, getFishesByUserId, getAllFishes, updateFishById, getFishById } = require('../model/database')
 
 module.exports = (server) => {
+  server.get('/fish', async (req, res, next) => {
+    try {
+      res.send(fish)
+    } catch (e) {
+      res.send(e.message)
+    }
+    next()
+  })
   server.get('/fish/all', async (req, res, next) => {
     try {
       let fishes = await getAllFishes()
@@ -64,8 +75,8 @@ module.exports = (server) => {
     }
     next()
   })
-//   server.delete('/fish/delete', (req, res, next) => {
-//     res.send('hello')
-//     next()
-//   })
+  server.del('/fish/:id', (req, res, next) => {
+    res.send('hello')
+    next()
+  })
 }

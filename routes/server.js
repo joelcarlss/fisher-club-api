@@ -1,3 +1,4 @@
+const Payload = require('../utils/Payload')
 const {home} = require('../utils/links')
 module.exports = (server) => {
   server.get('/hej/:name', function (req, res, next) {
@@ -6,10 +7,9 @@ module.exports = (server) => {
   })
 
   server.get('/', (req, res, next) => {
-    let payload = {
-      message: 'Hello',
-      links: home
-    }
+    let payload = new Payload()
+    payload.setMessage('Hello')
+    payload.setLinks(home)
     res.send(payload)
     next()
   })
