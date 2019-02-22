@@ -13,4 +13,4 @@ let WebhookSchema = new Schema({
   }
 })
 
-module.exports = mongoose.model('fish', WebhookSchema)
+module.exports = mongoose.model('webhook', WebhookSchema)

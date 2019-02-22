@@ -1,3 +1,4 @@
+let { readToken } = require('../model/authentication')
 let { authenticateUser, createUser } = require('../model/authentication')
 let { user } = require('../utils/links')
 const Payload = require('../utils/Payload')
@@ -27,11 +28,20 @@ module.exports = (server) => {
     next()
   })
 
-  server.post('/user/create', (req, res, next) => {
+  server.post('/user/create', async (req, res, next) => {
     let {username, password} = req.body
-    createUser(username, password)
+    createUser(username, password) // TODO: AWAIT
     .then(res.send('User Created'))
     .catch(console.log)
+    next()
+  })
+
+  // Webhook
+  server.post('/user/webhook', async (req, res, next) => {
+    let { url } = req.body
+    let data = readToken(req.headers.authorization)
+    addWebhook(data.indexOf, url)
+    res.send('Hook Created')
     next()
   })
 }
