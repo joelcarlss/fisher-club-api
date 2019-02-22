@@ -1,4 +1,5 @@
 const Fish = require('./Fish')
+const Webhook = require('./Webhook')
 
 // let { getFish } = require('../model/utility')
 
@@ -43,8 +44,33 @@ async function getAllFishes () {
 
 async function updateFishById (id, fish) {
   let result = await Fish.findOneAndUpdate(id, {$set: fish})
-  // let newFish = await Fish.findOne({id: result.id})
-  // console.log(newFish)
+  return result
+}
+
+async function deleteFishById (id) {
+  let result = await Fish.findOneAndDelete({id})
+  return result
+}
+
+function addWebhook (userId, url) {
+  return new Webhook({
+    userId,
+    url
+  }).save()
+}
+
+async function getWebhooksByUserId (userId) {
+  let hooks = await Webhook.find({ userId })
+  return hooks
+}
+
+async function updateWebhookByUserId (id, hook) {
+  let result = await Webhook.findByIdAndUpdate(id, {$set: hook})
+  return result
+}
+
+async function deleteWebhookById (id) {
+  let result = await Webhook.findOneAndDelete({id})
   return result
 }
 
@@ -53,5 +79,10 @@ module.exports = {
   getFishesByUserId,
   getAllFishes,
   getFishById,
-  updateFishById
+  updateFishById,
+  deleteFishById,
+  addWebhook,
+  getWebhooksByUserId,
+  updateWebhookByUserId,
+  deleteWebhookById
 }

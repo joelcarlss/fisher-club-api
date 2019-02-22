@@ -1,5 +1,6 @@
 let { readToken } = require('../model/authentication')
 let { authenticateUser, createUser } = require('../model/authentication')
+let { addWebhook, getWebhooksByUserId } = require('../model/database')
 let { user } = require('../utils/links')
 const Payload = require('../utils/Payload')
 
@@ -14,6 +15,7 @@ module.exports = (server) => {
     }
     next()
   })
+
   server.post('/user/login', async (req, res, next) => {
     let {username, password} = req.body
     try {
@@ -37,11 +39,38 @@ module.exports = (server) => {
   })
 
   // Webhook
+
+  server.get('/user/webhook', async (req, res, next) => {
+    try {
+      let data = readToken(req.headers.authorization)
+      let hook = await getWebhooksByUserId(data.id)
+      res.send(hook)
+    } catch (e) {
+      // TODO
+    }
+    next()
+  })
+
   server.post('/user/webhook', async (req, res, next) => {
-    let { url } = req.body
-    let data = readToken(req.headers.authorization)
-    addWebhook(data.indexOf, url)
-    res.send('Hook Created')
+    try {
+      let { url } = req.body
+      let data = readToken(req.headers.authorization)
+      let hook = await addWebhook(data.id, url)
+      res.send(hook)
+    } catch (e) {
+      // TODO
+    }
+    next()
+  })
+
+  server.put('/user/webhook', async (req, res, next) => {
+    try {
+      let data = readToken(req.headers.authorization)
+      let hook = await
+      res.send(hook)
+    } catch (e) {
+      // TODO
+    }
     next()
   })
 }
