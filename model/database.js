@@ -42,9 +42,9 @@ async function getAllFishes () {
 }
 
 async function updateFishById (id, fish) {
-  console.log(fish)
-  let result = await Fish.findByIdAndUpdate(id, {$set: fish})
-  console.log(result)
+  let result = await Fish.findOneAndUpdate(id, {$set: fish})
+  // let newFish = await Fish.findOne({id: result.id})
+  // console.log(newFish)
   return result
 }
 
