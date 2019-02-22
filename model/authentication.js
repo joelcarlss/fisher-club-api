@@ -2,7 +2,10 @@ require('dotenv').config()
 
 const jwt = require('jsonwebtoken')
 
+const { hoursToSeconds } = require('./utility')
 const User = require('./User')
+
+const tokenTtlHours = 3
 
 function createUser (username, password) {
   return new User({
@@ -15,7 +18,7 @@ async function authenticateUser (username, password) {
   try {
     let user = await User.authenticate(username, password)
     let token = jwt.sign({username: user.username, id: user.id}, process.env.SECRET, {
-      expiresIn: 2400
+      expiresIn: hoursToSeconds(tokenTtlHours)
     })
     return token
   } catch (error) {

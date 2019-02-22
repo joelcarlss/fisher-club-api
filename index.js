@@ -15,7 +15,7 @@ mongoose()
 var server = restify.createServer()
 
 server.use(bodyParser.urlencoded({extended: true}))
-server.use(jwt({ secret: process.env.SECRET }).unless({path: ['/user/login', '/user/create']}))
+server.use(jwt({ secret: process.env.SECRET }).unless({path: ['/', '/user/login', '/user/create']}))
 
 require('./routes/user')(server)
 require('./routes/server')(server)
