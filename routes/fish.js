@@ -1,9 +1,10 @@
 let { readToken } = require('../model/authentication')
 let { getFish } = require('../model/utility')
+let { sendWebhook } = require('../model/request')
 let { fish } = require('../utils/links')
+let { saveFish, getFishesByUserId, getAllFishes, updateFishById, getFishById, deleteFishById } = require('../model/database')
+let { mongooseErrorHandling } = require('../model/errorHandling')
 const Payload = require('../utils/Payload')
-
-let { saveFish, getFishesByUserId, getAllFishes, updateFishById, getFishById } = require('../model/database')
 
 module.exports = (server) => {
   server.get('/fish', async (req, res, next) => {
@@ -19,7 +20,8 @@ module.exports = (server) => {
       let fishes = await getAllFishes()
       res.send(fishes)
     } catch (e) {
-      res.send(e.message)
+      let error = mongooseErrorHandling(e)
+      res.send(error.code, error.message)
     }
     next()
   })
@@ -30,9 +32,11 @@ module.exports = (server) => {
     fish.userId = data.id
     try {
       let save = await saveFish(fish)
+      sendWebhook(fish)
       res.send(save)
     } catch (e) {
-      res.send(e.message)
+      let error = mongooseErrorHandling(e)
+      res.send(error.code, error.message)
     }
     next()
   })
@@ -42,7 +46,8 @@ module.exports = (server) => {
       let fishes = await getFishesByUserId(data.id)
       res.send(fishes)
     } catch (e) {
-      res.send(e.message)
+      let error = mongooseErrorHandling(e)
+      res.send(error.code, error.message)
     }
     next()
   })
@@ -54,7 +59,9 @@ module.exports = (server) => {
       fish.username = fishFromDb.username
       res.send(fish)
     } catch (e) {
-      res.send(e.message)
+      console.log(e)
+      let error = mongooseErrorHandling(e)
+      res.send(error.code, error.message)
     }
     next()
   })
@@ -71,12 +78,26 @@ module.exports = (server) => {
         res.send(403)
       }
     } catch (e) {
-      res.send(e.message)
+      let error = mongooseErrorHandling(e)
+      res.send(error.code, error.message)
     }
     next()
   })
-  server.del('/fish/:id', (req, res, next) => {
-    res.send('hello')
+  server.del('/fish/:id', async (req, res, next) => {
+    try {
+      let id = req.params.id
+      let token = readToken(req.headers.authorization)
+      let fish = await getFishById(id)
+      if (fish.userId === token.id) {
+        let result = await deleteFishById(id)
+        res.send(result)
+      } else {
+        res.send(403)
+      }
+    } catch (e) {
+      let error = mongooseErrorHandling(e)
+      res.send(error.code, error.message)
+    }
     next()
   })
 }

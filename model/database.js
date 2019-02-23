@@ -59,13 +59,23 @@ function addWebhook (userId, url) {
   }).save()
 }
 
+async function getAllWebhooks () {
+  let result = await Webhook.find()
+  return result
+}
+
 async function getWebhooksByUserId (userId) {
-  let hooks = await Webhook.find({ userId })
+  let result = await Webhook.find({ userId })
+  return result
+}
+
+async function getWebhookById (id) {
+  let hooks = await Webhook.findOne({ id })
   return hooks
 }
 
-async function updateWebhookByUserId (id, hook) {
-  let result = await Webhook.findByIdAndUpdate(id, {$set: hook})
+async function updateWebhookById (id, hook) {
+  let result = await Webhook.findOneAndUpdate(id, {$set: hook})
   return result
 }
 
@@ -82,7 +92,9 @@ module.exports = {
   updateFishById,
   deleteFishById,
   addWebhook,
+  getAllWebhooks,
   getWebhooksByUserId,
-  updateWebhookByUserId,
+  getWebhookById,
+  updateWebhookById,
   deleteWebhookById
 }

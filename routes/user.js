@@ -1,6 +1,7 @@
 let { readToken } = require('../model/authentication')
+let { mongooseErrorHandling } = require('../model/errorHandling')
 let { authenticateUser, createUser } = require('../model/authentication')
-let { addWebhook, getWebhooksByUserId } = require('../model/database')
+let { addWebhook, getWebhooksByUserId, getWebhookById, updateWebhookById, deleteWebhookById } = require('../model/database')
 let { user } = require('../utils/links')
 const Payload = require('../utils/Payload')
 
@@ -32,9 +33,14 @@ module.exports = (server) => {
 
   server.post('/user/create', async (req, res, next) => {
     let {username, password} = req.body
-    createUser(username, password) // TODO: AWAIT
-    .then(res.send('User Created'))
-    .catch(console.log)
+    try {
+      let user = await createUser(username, password)
+      res.send(user)
+    } catch (e) {
+      console.log(e) // TODO: Error handling
+      let error = mongooseErrorHandling(e)
+      res.send(error.code, error.message)
+    }
     next()
   })
 
@@ -45,6 +51,22 @@ module.exports = (server) => {
       let data = readToken(req.headers.authorization)
       let hook = await getWebhooksByUserId(data.id)
       res.send(hook)
+    } catch (e) {
+      // TODO
+    }
+    next()
+  })
+
+  server.get('/user/webhook/:id', async (req, res, next) => {
+    try {
+      let id = req.params.id
+      let data = readToken(req.headers.authorization)
+      let hook = await getWebhookById(id)
+      if (hook.userId === data.id) {
+        res.send(hook)
+      } else {
+        res.send(403)
+      }
     } catch (e) {
       // TODO
     }
@@ -63,13 +85,37 @@ module.exports = (server) => {
     next()
   })
 
-  server.put('/user/webhook', async (req, res, next) => {
+  server.put('/user/webhook/:id', async (req, res, next) => {
     try {
-      let data = readToken(req.headers.authorization)
-      let hook = await
-      res.send(hook)
+      let newHook = req.body
+      let id = req.params.id
+      let token = readToken(req.headers.authorization)
+      let oldHook = await getWebhookById(id)
+      if (oldHook.userId === token.id) {
+        let result = await updateWebhookById(id, newHook)
+        res.send(result)
+      } else {
+        res.send(403)
+      }
     } catch (e) {
-      // TODO
+      res.send(e.message)
+    }
+    next()
+  })
+
+  server.del('/user/webhook/:id', async (req, res, next) => {
+    try {
+      let id = req.params.id
+      let token = readToken(req.headers.authorization)
+      let hook = await getWebhookById(id)
+      if (hook.userId === token.id) {
+        let result = await deleteWebhookById(id)
+        res.send(result)
+      } else {
+        res.send(403)
+      }
+    } catch (e) {
+      res.send(e.message)
     }
     next()
   })
