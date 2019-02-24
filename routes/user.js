@@ -2,6 +2,7 @@ let { readToken } = require('../model/authentication')
 let { mongooseErrorHandling } = require('../model/errorHandling')
 let { authenticateUser, createUser } = require('../model/authentication')
 let { addWebhook, getWebhooksByUserId, getWebhookById, updateWebhookById, deleteWebhookById } = require('../model/database')
+// let { mongooseErrorHandling } = require('../model/errorHandling')
 let { user } = require('../utils/links')
 const Payload = require('../utils/Payload')
 
@@ -18,28 +19,31 @@ module.exports = (server) => {
   })
 
   server.post('/user/login', async (req, res, next) => {
+    let payload = new Payload()
     let {username, password} = req.body
     try {
       let token = await authenticateUser(username, password)
-      let payload = new Payload()
       payload.setToken(token)
       res.send(payload)
     } catch ({message}) {
-      console.log(message)
-      res.send(400, message)
+      payload.setMessage(message)
+      res.send(400, payload)
     }
     next()
   })
 
   server.post('/user/create', async (req, res, next) => {
+    let payload = new Payload()
     let {username, password} = req.body
     try {
       let user = await createUser(username, password)
-      res.send(user)
+      payload.setData(user)
+      payload.setMessage('User created')
+      res.send(payload)
     } catch (e) {
-      console.log(e) // TODO: Error handling
       let error = mongooseErrorHandling(e)
-      res.send(error.code, error.message)
+      payload.setMessage(error.message)
+      res.send(error.code, payload)
     }
     next()
   })
@@ -47,45 +51,61 @@ module.exports = (server) => {
   // Webhook
 
   server.get('/user/webhook', async (req, res, next) => {
+    let payload = new Payload()
     try {
       let data = readToken(req.headers.authorization)
       let hook = await getWebhooksByUserId(data.id)
-      res.send(hook)
+      payload.setData(hook)
+      payload.setMessage('Webhook Saved')
+      res.send(payload)
     } catch (e) {
-      // TODO
+      let error = mongooseErrorHandling(e)
+      payload.setMessage(error.message)
+      res.send(error.code, payload)
     }
     next()
   })
 
   server.get('/user/webhook/:id', async (req, res, next) => {
+    let payload = new Payload()
     try {
       let id = req.params.id
       let data = readToken(req.headers.authorization)
       let hook = await getWebhookById(id)
       if (hook.userId === data.id) {
-        res.send(hook)
+        payload.setData(hook)
+        res.send(payload)
       } else {
-        res.send(403)
+        payload.setMessage('Wrong User')
+        res.send(403, payload)
       }
     } catch (e) {
-      // TODO
+      let error = mongooseErrorHandling(e)
+      payload.setMessage(error.message)
+      res.send(error.code, payload)
     }
     next()
   })
 
   server.post('/user/webhook', async (req, res, next) => {
+    let payload = new Payload()
     try {
       let { url } = req.body
       let data = readToken(req.headers.authorization)
       let hook = await addWebhook(data.id, url)
-      res.send(hook)
+      payload.setData(hook)
+      payload.setMessage('Webhook saved')
+      res.send(payload)
     } catch (e) {
-      // TODO
+      let error = mongooseErrorHandling(e)
+      payload.setMessage(error.message)
+      res.send(error.code, payload)
     }
     next()
   })
 
   server.put('/user/webhook/:id', async (req, res, next) => {
+    let payload = new Payload()
     try {
       let newHook = req.body
       let id = req.params.id
@@ -93,29 +113,38 @@ module.exports = (server) => {
       let oldHook = await getWebhookById(id)
       if (oldHook.userId === token.id) {
         let result = await updateWebhookById(id, newHook)
-        res.send(result)
+        payload.setData(result)
+        res.send(payload)
       } else {
-        res.send(403)
+        payload.setMessage('Wrong User')
+        res.send(403, payload)
       }
     } catch (e) {
-      res.send(e.message)
+      let error = mongooseErrorHandling(e)
+      payload.setMessage(error.message)
+      res.send(error.code, payload)
     }
     next()
   })
 
   server.del('/user/webhook/:id', async (req, res, next) => {
+    let payload = new Payload()
     try {
       let id = req.params.id
       let token = readToken(req.headers.authorization)
       let hook = await getWebhookById(id)
       if (hook.userId === token.id) {
         let result = await deleteWebhookById(id)
-        res.send(result)
+        payload.setData(result)
+        res.send(payload)
       } else {
-        res.send(403)
+        payload.setMessage('Wrong User')
+        res.send(403, payload)
       }
     } catch (e) {
-      res.send(e.message)
+      let error = mongooseErrorHandling(e)
+      payload.setMessage(error.message)
+      res.send(error.code, payload)
     }
     next()
   })

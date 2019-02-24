@@ -8,6 +8,9 @@ module.exports = class Payload {
   setMessage (message) {
     this.payload.message = message
   }
+  setData (data) {
+    this.payload.data = data
+  }
   setToken (token) {
     this.payload.token = token
   }
