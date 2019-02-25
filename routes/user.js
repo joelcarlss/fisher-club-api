@@ -1,6 +1,6 @@
 let { readToken } = require('../model/authentication')
 let { mongooseErrorHandling } = require('../model/errorHandling')
-let { authenticateUser, createUser } = require('../model/authentication')
+let { createUser } = require('../model/authentication')
 let { addWebhook, getWebhooksByUserId, getWebhookById, updateWebhookById, deleteWebhookById } = require('../model/database')
 // let { mongooseErrorHandling } = require('../model/errorHandling')
 let { user } = require('../utils/links')
@@ -11,6 +11,7 @@ module.exports = (server) => {
     try {
       let payload = new Payload()
       payload.setLinks(user)
+      // TODO: LIST ALL USERS
       res.send(payload)
     } catch (e) {
       res.send(e.message)
@@ -18,21 +19,7 @@ module.exports = (server) => {
     next()
   })
 
-  server.post('/user/login', async (req, res, next) => {
-    let payload = new Payload()
-    let {username, password} = req.body
-    try {
-      let token = await authenticateUser(username, password)
-      payload.setToken(token)
-      res.send(payload)
-    } catch ({message}) {
-      payload.setMessage(message)
-      res.send(400, payload)
-    }
-    next()
-  })
-
-  server.post('/user/create', async (req, res, next) => {
+  server.post('/user', async (req, res, next) => {
     let payload = new Payload()
     let {username, password} = req.body
     try {
@@ -47,10 +34,16 @@ module.exports = (server) => {
     }
     next()
   })
+  server.get('/user/:id', async (req, res, next) => {
+    let payload = new Payload()
+    // TODO: this should return the current user
+    res.send(payload)
+    next()
+  })
 
   // Webhook
 
-  server.get('/user/webhook', async (req, res, next) => {
+  server.get('/user/:id/webhook/', async (req, res, next) => {
     let payload = new Payload()
     try {
       let data = readToken(req.headers.authorization)
@@ -66,7 +59,24 @@ module.exports = (server) => {
     next()
   })
 
-  server.get('/user/webhook/:id', async (req, res, next) => {
+  server.post('/user/:id/webhook', async (req, res, next) => {
+    let payload = new Payload()
+    try {
+      let { url } = req.body
+      let data = readToken(req.headers.authorization)
+      let hook = await addWebhook(data.id, url)
+      payload.setData(hook)
+      payload.setMessage('Webhook saved')
+      res.send(payload)
+    } catch (e) {
+      let error = mongooseErrorHandling(e)
+      payload.setMessage(error.message)
+      res.send(error.code, payload)
+    }
+    next()
+  })
+
+  server.get('/user/:id/webhook/:id', async (req, res, next) => {
     let payload = new Payload()
     try {
       let id = req.params.id
@@ -87,24 +97,7 @@ module.exports = (server) => {
     next()
   })
 
-  server.post('/user/webhook', async (req, res, next) => {
-    let payload = new Payload()
-    try {
-      let { url } = req.body
-      let data = readToken(req.headers.authorization)
-      let hook = await addWebhook(data.id, url)
-      payload.setData(hook)
-      payload.setMessage('Webhook saved')
-      res.send(payload)
-    } catch (e) {
-      let error = mongooseErrorHandling(e)
-      payload.setMessage(error.message)
-      res.send(error.code, payload)
-    }
-    next()
-  })
-
-  server.put('/user/webhook/:id', async (req, res, next) => {
+  server.put('/user/:id/webhook/:id', async (req, res, next) => {
     let payload = new Payload()
     try {
       let newHook = req.body
@@ -127,7 +120,7 @@ module.exports = (server) => {
     next()
   })
 
-  server.del('/user/webhook/:id', async (req, res, next) => {
+  server.del('/user/:id/webhook/:id', async (req, res, next) => {
     let payload = new Payload()
     try {
       let id = req.params.id

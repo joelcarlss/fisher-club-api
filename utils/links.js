@@ -1,58 +1,109 @@
 module.exports = {
-  home: [
-    {
-      rel: 'user',
-      href: '/user',
-      type: 'GET'
+  methods: [],
+  fish: {
+    methods: [
+      {
+        rel: 'get.all',
+        href: '/fish',
+        type: 'GET'
+      },
+      {
+        rel: 'create',
+        href: '/fish',
+        type: 'POST'
+      }
+    ],
+    id: {
+      methods: [
+        {
+          rel: 'get.specific',
+          href: '/fish/:id',
+          type: 'GET'
+        },
+        {
+          rel: 'update.specific',
+          href: '/fish/:id',
+          type: 'PUT'
+        },
+        {
+          rel: 'delete.specific',
+          href: '/fish/:id',
+          type: 'DELETE'
+        }
+      ]
     },
-    {
-      rel: 'fish',
-      href: '/fish',
-      type: 'GET'
+    user: {
+      methods: [],
+      id: {
+        rel: 'get.all',
+        href: '/fish/user',
+        type: 'GET'
+      }
     }
-  ],
-  fish: [
-    {
-      rel: 'all.fishes',
-      href: '/fish/all',
-      type: 'GET'
-    },
-    {
-      rel: 'add.fish',
-      href: '/fish',
-      type: 'POST'
-    },
-    {
-      rel: 'users.all.fish',
-      href: '/fish/user',
-      type: 'GET'
-    },
-    {
-      rel: 'specific.fish',
-      href: '/fish/:id',
-      type: 'GET'
-    },
-    {
-      rel: 'update.fish',
-      href: '/fish/:id',
-      type: 'PUT'
-    },
-    {
-      rel: 'delete.fish',
-      href: '/fish/:id',
-      type: 'DELETE'
+  },
+  user: {
+    methods: [
+      {
+        rel: 'list',
+        href: '/user',
+        type: 'GET'
+      },
+      {
+        rel: 'create',
+        href: '/user',
+        type: 'POST',
+        param: ['username', 'password']
+      }
+    ],
+    id: {
+      method: {
+        rel: 'create',
+        href: '/user',
+        type: 'POST'
+      },
+      webhook: {
+        methods: [
+          {
+            rel: 'list',
+            href: '/user/:id/webhook',
+            type: 'GET'
+          },
+          {
+            rel: 'create',
+            href: '/user/:id/webhook',
+            type: 'POST'
+          }
+        ],
+        id: {
+          methods: [
+            {
+              rel: 'list',
+              href: '/user/:id/webhook/:id',
+              type: 'GET'
+            },
+            {
+              rel: 'edit',
+              href: '/user/:id/webhook/:id',
+              type: 'PUT'
+            },
+            {
+              rel: 'delete',
+              href: '/user/:id/webhook/:id',
+              type: 'DELETE'
+            }
+          ]
+        }
+      }
     }
-  ],
-  user: [
-    {
-      rel: 'create.user',
-      href: '/user/create',
-      type: 'POST'
-    },
-    {
-      rel: 'login.user',
-      href: '/user/login',
-      type: 'POST'
-    }
-  ]
+  },
+  auth: {
+    methods: [
+      {
+        rel: 'create',
+        href: '/auth',
+        type: 'POST',
+        param: ['username', 'password']
+      }
+    ]
+  }
 }
