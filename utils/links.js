@@ -45,9 +45,13 @@ module.exports = {
     user: {
       methods: [],
       id: {
-        rel: 'list',
-        href: '/fish/:id/user',
-        type: 'GET'
+        method: [
+          {
+            rel: 'list',
+            href: '/fish/:id/user',
+            type: 'GET'
+          }
+        ]
       }
     }
   },
@@ -70,39 +74,46 @@ module.exports = {
         rel: 'list.specific',
         href: '/user/:id',
         type: 'GET'
-      },
-      webhook: {
+      }
+    }
+  },
+  webhook: {
+    methods: [
+      {
+        rel: 'list',
+        href: '/webhook',
+        type: 'POST'
+      }
+    ],
+    id: {
+      methods: [
+        {
+          rel: 'list',
+          href: '/webhook/:id',
+          type: 'GET'
+        },
+        {
+          rel: 'edit',
+          href: '/webhook/:id',
+          type: 'PUT'
+        },
+        {
+          rel: 'delete',
+          href: '/webhook/:id',
+          type: 'DELETE'
+        }
+      ]
+    },
+    user: {
+      methods: [],
+      id: {
         methods: [
           {
             rel: 'list',
-            href: '/user/:id/webhook',
+            href: '/webhook/user/:id',
             type: 'GET'
-          },
-          {
-            rel: 'create',
-            href: '/user/:id/webhook',
-            type: 'POST'
           }
-        ],
-        id: {
-          methods: [
-            {
-              rel: 'list',
-              href: '/user/:id/webhook/:id',
-              type: 'GET'
-            },
-            {
-              rel: 'edit',
-              href: '/user/:id/webhook/:id',
-              type: 'PUT'
-            },
-            {
-              rel: 'delete',
-              href: '/user/:id/webhook/:id',
-              type: 'DELETE'
-            }
-          ]
-        }
+        ]
       }
     }
   }

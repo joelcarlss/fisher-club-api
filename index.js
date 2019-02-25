@@ -15,11 +15,13 @@ mongoose()
 var server = restify.createServer()
 
 server.use(bodyParser.urlencoded({extended: true}))
-server.use(jwt({ secret: process.env.SECRET }).unless({path: ['/', '/user/login', '/user/create']}))
+server.use(jwt({ secret: process.env.SECRET }).unless({path: ['/', '/auth', '/user']}))
 
 require('./routes/user')(server)
 require('./routes/server')(server)
 require('./routes/fish')(server)
+require('./routes/auth')(server)
+require('./routes/webhook')(server)
 
 server.get('/hello/:name', respond)
 server.head('/hello/:name', respond)

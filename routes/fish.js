@@ -40,20 +40,7 @@ module.exports = (server) => {
     }
     next()
   })
-  server.get('/fish/user/:id', async (req, res, next) => { // IM HERE
-    let payload = new Payload()
-    try {
-      let data = readToken(req.headers.authorization)
-      let fishes = await getFishesByUserId(data.id)
-      payload.setData(fishes)
-      res.send(payload)
-    } catch (e) {
-      let error = mongooseErrorHandling(e)
-      payload.setMessage(error.message)
-      res.send(error.code, payload)
-    }
-    next()
-  })
+
   server.get('/fish/:id', async (req, res, next) => {
     let payload = new Payload()
     payload.setLinks(links.fish)
@@ -72,6 +59,7 @@ module.exports = (server) => {
     }
     next()
   })
+
   server.put('/fish/:id', async (req, res, next) => {
     let payload = new Payload()
     payload.setLinks(links.fish)
@@ -96,6 +84,7 @@ module.exports = (server) => {
     }
     next()
   })
+
   server.del('/fish/:id', async (req, res, next) => {
     let payload = new Payload()
     payload.setLinks(links.fish)
@@ -115,6 +104,22 @@ module.exports = (server) => {
     } catch (e) {
       let error = mongooseErrorHandling(e)
       payload.message(error.message)
+      res.send(error.code, payload)
+    }
+    next()
+  })
+
+  // Fish by user
+  server.get('/fish/user/:id', async (req, res, next) => {
+    let payload = new Payload()
+    try {
+      let id = req.params.id
+      let fishes = await getFishesByUserId(id)
+      payload.setData(fishes)
+      res.send(payload)
+    } catch (e) {
+      let error = mongooseErrorHandling(e)
+      payload.setMessage(error.message)
       res.send(error.code, payload)
     }
     next()
