@@ -1,9 +1,19 @@
 module.exports = {
   methods: [],
+  auth: {
+    methods: [
+      {
+        rel: 'create',
+        href: '/auth',
+        type: 'POST',
+        param: ['username', 'password']
+      }
+    ]
+  },
   fish: {
     methods: [
       {
-        rel: 'get.all',
+        rel: 'list',
         href: '/fish',
         type: 'GET'
       },
@@ -16,7 +26,7 @@ module.exports = {
     id: {
       methods: [
         {
-          rel: 'get.specific',
+          rel: 'list.specific',
           href: '/fish/:id',
           type: 'GET'
         },
@@ -35,8 +45,8 @@ module.exports = {
     user: {
       methods: [],
       id: {
-        rel: 'get.all',
-        href: '/fish/user',
+        rel: 'list',
+        href: '/fish/:id/user',
         type: 'GET'
       }
     }
@@ -57,9 +67,9 @@ module.exports = {
     ],
     id: {
       method: {
-        rel: 'create',
-        href: '/user',
-        type: 'POST'
+        rel: 'list.specific',
+        href: '/user/:id',
+        type: 'GET'
       },
       webhook: {
         methods: [
@@ -95,15 +105,5 @@ module.exports = {
         }
       }
     }
-  },
-  auth: {
-    methods: [
-      {
-        rel: 'create',
-        href: '/auth',
-        type: 'POST',
-        param: ['username', 'password']
-      }
-    ]
   }
 }

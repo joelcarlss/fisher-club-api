@@ -11,17 +11,6 @@ module.exports = (server) => {
     let payload = new Payload()
     payload.setLinks(links.fish)
     try {
-      res.send(payload)
-    } catch (e) {
-      payload.setMessage(e.message)
-      res.send(payload)
-    }
-    next()
-  })
-  server.get('/fish/all', async (req, res, next) => {
-    let payload = new Payload()
-    payload.setLinks(links.fish)
-    try {
       let fishes = await getAllFishes()
       payload.setData(fishes)
       res.send(payload)
@@ -51,7 +40,7 @@ module.exports = (server) => {
     }
     next()
   })
-  server.get('/fish/user', async (req, res, next) => {
+  server.get('/fish/user/:id', async (req, res, next) => { // IM HERE
     let payload = new Payload()
     try {
       let data = readToken(req.headers.authorization)
