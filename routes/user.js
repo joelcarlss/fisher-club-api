@@ -1,4 +1,4 @@
-let { getAllUsers } = require('../model/database')
+let { getAllUsers, getUserById } = require('../model/database')
 let { getUsersData } = require('../model/utility')
 let { mongooseErrorHandling } = require('../model/errorHandling')
 let { createUser } = require('../model/authentication')
@@ -10,7 +10,6 @@ module.exports = (server) => {
     let payload = new Payload(req)
     payload.setPath(user)
     try {
-      // TODO: LIST ALL USERS
       let result = await getAllUsers()
       let users = getUsersData(result)
       payload.setData(users)
@@ -42,8 +41,15 @@ module.exports = (server) => {
     let id = req.params.id
     let payload = new Payload(req)
     payload.setPath(user.id)
-    // TODO: this should return the current user
-    res.send(payload)
+    try {
+      let user = await getUserById(id)
+      payload.setData(user)
+      res.send(payload)
+    } catch (e) {
+      let error = mongooseErrorHandling(e)
+      payload.setMessage(error.message)
+      res.send(error.code, payload)
+    }
     next()
   })
 }
