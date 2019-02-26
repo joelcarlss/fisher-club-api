@@ -1,4 +1,5 @@
-
+let { getAllUsers } = require('../model/database')
+let { getUsersData } = require('../model/utility')
 let { mongooseErrorHandling } = require('../model/errorHandling')
 let { createUser } = require('../model/authentication')
 let { user } = require('../utils/links')
@@ -10,7 +11,9 @@ module.exports = (server) => {
     payload.setPath(user)
     try {
       // TODO: LIST ALL USERS
-      getAllUsers()
+      let result = await getAllUsers()
+      let users = getUsersData(result)
+      payload.setData(users)
       res.send(payload)
     } catch (e) {
       let error = mongooseErrorHandling(e)

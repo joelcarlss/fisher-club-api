@@ -85,6 +85,11 @@ async function deleteWebhookById (id) {
   return result
 }
 
+async function getAllUsers () {
+  let result = await User.find()
+  return result
+}
+
 module.exports = {
   saveFish,
   getFishesByUserId,
@@ -97,5 +102,6 @@ module.exports = {
   getWebhooksByUserId,
   getWebhookById,
   updateWebhookById,
-  deleteWebhookById
+  deleteWebhookById,
+  getAllUsers
 }

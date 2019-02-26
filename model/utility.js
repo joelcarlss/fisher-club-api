@@ -11,6 +11,13 @@ function getFishData ({longitude, latitude, species, weight, length, image, time
   }
 }
 
+function getUserData ({username, createdAt}) {
+  return {
+    username,
+    createdAt
+  }
+}
+
 function getFishesData (data) {
   let arr = []
   data.forEach(element => {
@@ -22,6 +29,13 @@ function getFishesData (data) {
   return arr
 }
 
+function getUsersData (users) {
+  let arr = []
+  users.forEach(user => {
+    arr.push(getUserData(user))
+  });
+  return arr
+}
 
 
 function hoursToSeconds (hours) {
@@ -31,6 +45,7 @@ function hoursToSeconds (hours) {
   module.exports = {
     getFishData,
     getFishesData,
+    getUsersData,
     hoursToSeconds
   }
   
