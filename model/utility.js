@@ -11,10 +11,11 @@ function getFishData ({longitude, latitude, species, weight, length, image, time
   }
 }
 
-function getUserData ({username, createdAt}) {
+function getUserData ({username, createdAt, id}) {
   return {
     username,
-    createdAt
+    createdAt,
+    id
   }
 }
 
@@ -45,6 +46,7 @@ function hoursToSeconds (hours) {
   module.exports = {
     getFishData,
     getFishesData,
+    getUserData,
     getUsersData,
     hoursToSeconds
   }

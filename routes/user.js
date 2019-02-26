@@ -1,5 +1,5 @@
 let { getAllUsers, getUserById } = require('../model/database')
-let { getUsersData } = require('../model/utility')
+let { getUsersData, getUserData } = require('../model/utility')
 let { mongooseErrorHandling } = require('../model/errorHandling')
 let { createUser } = require('../model/authentication')
 let { user } = require('../utils/links')
@@ -42,7 +42,8 @@ module.exports = (server) => {
     let payload = new Payload(req)
     payload.setPath(user.id)
     try {
-      let user = await getUserById(id)
+      let data = await getUserById(id)
+      let user = getUserData(data)
       payload.setData(user)
       res.send(payload)
     } catch (e) {

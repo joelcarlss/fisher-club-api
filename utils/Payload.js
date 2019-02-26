@@ -14,7 +14,7 @@ module.exports = class Payload {
     this.setCurrentUrl(req)
   }
   setCurrentUrl (req) {
-    this.payload.path.current.url = '/' + req.headers.host + req.url
+    this.payload.path.current.url = 'http://' + req.headers.host + req.url
   }
   setMessage (message) {
     this.payload.message = message

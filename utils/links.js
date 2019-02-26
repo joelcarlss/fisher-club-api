@@ -1,10 +1,11 @@
+const url = ''
 module.exports = {
   methods: [],
   auth: {
     methods: [
       {
         rel: 'create',
-        href: '/auth',
+        href: url + '/auth`',
         type: 'POST',
         param: ['username', 'password']
       }
@@ -14,12 +15,12 @@ module.exports = {
     methods: [
       {
         rel: 'list',
-        href: '/fish',
+        href: url + '/fish',
         type: 'GET'
       },
       {
         rel: 'create',
-        href: '/fish',
+        href: url + '/fish',
         type: 'POST'
       }
     ],
@@ -27,17 +28,17 @@ module.exports = {
       methods: [
         {
           rel: 'list.specific',
-          href: '/fish/:id',
+          href: url + '/fish/:id',
           type: 'GET'
         },
         {
           rel: 'update.specific',
-          href: '/fish/:id',
+          href: url + '/fish/:id',
           type: 'PUT'
         },
         {
           rel: 'delete.specific',
-          href: '/fish/:id',
+          href: url + '/fish/:id',
           type: 'DELETE'
         }
       ]
@@ -48,7 +49,7 @@ module.exports = {
         method: [
           {
             rel: 'list',
-            href: '/fish/:id/user',
+            href: url + '/fish/:id/user',
             type: 'GET'
           }
         ]
@@ -59,12 +60,12 @@ module.exports = {
     methods: [
       {
         rel: 'list',
-        href: '/user',
+        href: url + '/user',
         type: 'GET'
       },
       {
         rel: 'create',
-        href: '/user',
+        href: url + '/user',
         type: 'POST',
         param: ['username', 'password']
       }
@@ -72,7 +73,7 @@ module.exports = {
     id: {
       method: {
         rel: 'list.specific',
-        href: '/user/:id',
+        href: url + '/user/:id',
         type: 'GET'
       }
     }
@@ -81,7 +82,7 @@ module.exports = {
     methods: [
       {
         rel: 'list',
-        href: '/webhook',
+        href: url + '/webhook',
         type: 'POST'
       }
     ],
@@ -89,17 +90,17 @@ module.exports = {
       methods: [
         {
           rel: 'list',
-          href: '/webhook/:id',
+          href: url + '/webhook/:id',
           type: 'GET'
         },
         {
           rel: 'edit',
-          href: '/webhook/:id',
+          href: url + '/webhook/:id',
           type: 'PUT'
         },
         {
           rel: 'delete',
-          href: '/webhook/:id',
+          href: url + '/webhook/:id',
           type: 'DELETE'
         }
       ]
@@ -110,7 +111,7 @@ module.exports = {
         methods: [
           {
             rel: 'list',
-            href: '/webhook/user/:id',
+            href: url + '/webhook/user/:id',
             type: 'GET'
           }
         ]
