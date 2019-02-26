@@ -1,3 +1,4 @@
+let { setUrl } = require('../utils/links')
 module.exports = class Payload {
   constructor (req) {
     this.payload = {
@@ -12,9 +13,14 @@ module.exports = class Payload {
       }
     }
     this.setCurrentUrl(req)
+    this.setUrl(req)
   }
   setCurrentUrl (req) {
     this.payload.path.current.url = 'http://' + req.headers.host + req.url
+  }
+  setUrl (req) {
+    let url = 'http://' + req.headers.host
+    setUrl(url)
   }
   setMessage (message) {
     this.payload.message = message

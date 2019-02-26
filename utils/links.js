@@ -1,5 +1,12 @@
-const url = ''
-module.exports = {
+require('dotenv').config()
+
+let url = process.env.URL
+
+function setUrl (newUrl) {
+  url = newUrl
+  return url
+}
+const links = {
   methods: [],
   auth: {
     methods: [
@@ -118,4 +125,8 @@ module.exports = {
       }
     }
   }
+}
+module.exports = {
+  links,
+  setUrl
 }

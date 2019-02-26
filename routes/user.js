@@ -2,13 +2,13 @@ let { getAllUsers, getUserById } = require('../model/database')
 let { getUsersData, getUserData } = require('../model/utility')
 let { mongooseErrorHandling } = require('../model/errorHandling')
 let { createUser } = require('../model/authentication')
-let { user } = require('../utils/links')
+let { links } = require('../utils/links')
 const Payload = require('../utils/Payload')
 
 module.exports = (server) => {
   server.get('/user', async (req, res, next) => {
     let payload = new Payload(req)
-    payload.setPath(user)
+    payload.setPath(links.user)
     try {
       let result = await getAllUsers()
       let users = getUsersData(result)
@@ -23,7 +23,7 @@ module.exports = (server) => {
 
   server.post('/user', async (req, res, next) => {
     let payload = new Payload(req)
-    payload.setPath(user)
+    payload.setPath(links.user)
     let {username, password} = req.body
     try {
       let user = await createUser(username, password)
@@ -40,7 +40,7 @@ module.exports = (server) => {
   server.get('/user/:id', async (req, res, next) => {
     let id = req.params.id
     let payload = new Payload(req)
-    payload.setPath(user.id)
+    payload.setPath(links.user.id)
     try {
       let data = await getUserById(id)
       let user = getUserData(data)
