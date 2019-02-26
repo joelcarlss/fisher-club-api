@@ -7,9 +7,9 @@ module.exports = (server) => {
   })
 
   server.get('/', (req, res, next) => {
-    let payload = new Payload()
+    let payload = new Payload(req)
     payload.setMessage('Hello')
-    payload.setLinks(links)
+    payload.setPath(links)
     res.send(payload)
     next()
   })

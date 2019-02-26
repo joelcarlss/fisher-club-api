@@ -6,19 +6,22 @@ const Payload = require('../utils/Payload')
 
 module.exports = (server) => {
   server.get('/user', async (req, res, next) => {
+    let payload = new Payload(req)
+    payload.setPath(user)
     try {
-      let payload = new Payload()
-      payload.setLinks(user)
       // TODO: LIST ALL USERS
+      getAllUsers()
       res.send(payload)
     } catch (e) {
-      res.send(e.message)
+      let error = mongooseErrorHandling(e)
+      res.send(error.status, error.message)
     }
     next()
   })
 
   server.post('/user', async (req, res, next) => {
-    let payload = new Payload()
+    let payload = new Payload(req)
+    payload.setPath(user)
     let {username, password} = req.body
     try {
       let user = await createUser(username, password)
@@ -34,7 +37,8 @@ module.exports = (server) => {
   })
   server.get('/user/:id', async (req, res, next) => {
     let id = req.params.id
-    let payload = new Payload()
+    let payload = new Payload(req)
+    payload.setPath(user.id)
     // TODO: this should return the current user
     res.send(payload)
     next()

@@ -1,7 +1,8 @@
 const mongoose = {
   validator: 'ValidatorError',
   validation: 'ValidationError',
-  cast: 'CastError'
+  cast: 'CastError',
+  mongoError: 'MongoError'
 }
 let error = {
   code: 500
@@ -18,6 +19,8 @@ module.exports = {
       error.code = 400
     } else if (name === mongoose.cast) {
       error.code = 404
+    } else if (name === mongoose.mongoError) {
+      error.code = 409
     }
     return error
   }

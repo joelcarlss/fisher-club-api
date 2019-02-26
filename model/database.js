@@ -1,3 +1,4 @@
+const User = require('./User')
 const Fish = require('./Fish')
 const Webhook = require('./Webhook')
 

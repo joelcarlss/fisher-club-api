@@ -1,5 +1,5 @@
 let { readToken } = require('../model/authentication')
-let { getFish } = require('../model/utility')
+let { getFishData, getFishesData } = require('../model/utility')
 let { sendWebhook } = require('../model/request')
 let links = require('../utils/links')
 let { saveFish, getFishesByUserId, getAllFishes, updateFishById, getFishById, deleteFishById } = require('../model/database')
@@ -8,10 +8,11 @@ const Payload = require('../utils/Payload')
 
 module.exports = (server) => {
   server.get('/fish', async (req, res, next) => {
-    let payload = new Payload()
-    payload.setLinks(links.fish)
+    let payload = new Payload(req)
+    payload.setPath(links.fish)
     try {
-      let fishes = await getAllFishes()
+      let data = await getAllFishes()
+      let fishes = getFishesData(data)
       payload.setData(fishes)
       res.send(payload)
     } catch (e) {
@@ -22,10 +23,10 @@ module.exports = (server) => {
     next()
   })
   server.post('/fish', async (req, res, next) => {
-    let payload = new Payload()
-    payload.setLinks(links.fish)
+    let payload = new Payload(req)
+    payload.setPath(links.fish)
     let data = readToken(req.headers.authorization)
-    let fish = getFish(req.body)
+    let fish = getFishData(req.body)
     fish.username = data.username
     fish.userId = data.id
     try {
@@ -42,12 +43,12 @@ module.exports = (server) => {
   })
 
   server.get('/fish/:id', async (req, res, next) => {
-    let payload = new Payload()
-    payload.setLinks(links.fish)
+    let payload = new Payload(req)
+    payload.setPath(links.fish.id)
     try {
       let id = req.params.id
       let fishFromDb = await getFishById(id)
-      let fish = getFish(fishFromDb)
+      let fish = getFishData(fishFromDb)
       fish.username = fishFromDb.username
       payload.setData(fish)
       res.send(payload)
@@ -61,8 +62,8 @@ module.exports = (server) => {
   })
 
   server.put('/fish/:id', async (req, res, next) => {
-    let payload = new Payload()
-    payload.setLinks(links.fish)
+    let payload = new Payload(req)
+    payload.setPath(links.fish.id)
     try {
       let newFish = req.body
       let id = req.params.id
@@ -86,8 +87,8 @@ module.exports = (server) => {
   })
 
   server.del('/fish/:id', async (req, res, next) => {
-    let payload = new Payload()
-    payload.setLinks(links.fish)
+    let payload = new Payload(req)
+    payload.setPath(links.fish.id)
     try {
       let id = req.params.id
       let token = readToken(req.headers.authorization)
@@ -111,7 +112,8 @@ module.exports = (server) => {
 
   // Fish by user
   server.get('/fish/user/:id', async (req, res, next) => {
-    let payload = new Payload()
+    let payload = new Payload(req)
+    payload.setPath(links.fish.user.id)
     try {
       let id = req.params.id
       let fishes = await getFishesByUserId(id)

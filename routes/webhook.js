@@ -1,12 +1,14 @@
 let { readToken } = require('../model/authentication')
 let { addWebhook, getWebhooksByUserId, getWebhookById, updateWebhookById, deleteWebhookById } = require('../model/database')
 let { mongooseErrorHandling } = require('../model/errorHandling')
+let { webhook } = require('../utils/links')
 const Payload = require('../utils/Payload')
 
 module.exports = (server) => {
   // Posts new webhook
   server.post('/webhook', async (req, res, next) => {
-    let payload = new Payload()
+    let payload = new Payload(req)
+    payload.setPath(webhook)
     try {
       let { url } = req.body
       let data = readToken(req.headers.authorization)
@@ -24,7 +26,8 @@ module.exports = (server) => {
 
   // Shows webhook by id
   server.get('/webhook/:id', async (req, res, next) => {
-    let payload = new Payload()
+    let payload = new Payload(req)
+    payload.setPath(webhook.id)
     try {
       let id = req.params.id
       let data = readToken(req.headers.authorization)
@@ -46,7 +49,8 @@ module.exports = (server) => {
 
   // updates webhook by id
   server.put('/webhook/:id', async (req, res, next) => {
-    let payload = new Payload()
+    let payload = new Payload(req)
+    payload.setPath(webhook.id)
     try {
       let newHook = req.body
       let id = req.params.id
@@ -70,7 +74,8 @@ module.exports = (server) => {
 
   // Deletes webhook by id
   server.del('/webhook/:id', async (req, res, next) => {
-    let payload = new Payload()
+    let payload = new Payload(req)
+    payload.setPath(webhook.id)
     try {
       let id = req.params.id
       let token = readToken(req.headers.authorization)
@@ -94,7 +99,8 @@ module.exports = (server) => {
   // Lists users webhooks
   server.get('/webhook/user/:id', async (req, res, next) => {
     let id = req.params.id
-    let payload = new Payload()
+    let payload = new Payload(req)
+    payload.setPath(webhook.user.id)
     try {
       let data = readToken(req.headers.authorization)
       if (id === data.id) {
