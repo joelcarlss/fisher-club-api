@@ -23,7 +23,7 @@ module.exports = (server) => {
 
   server.post('/user', async (req, res, next) => {
     let payload = new Payload(req)
-    payload.setPath(links.user)
+    payload.setPath(links().user)
     let {username, password} = req.body
     try {
       let user = await createUser(username, password)
@@ -40,7 +40,7 @@ module.exports = (server) => {
   server.get('/user/:id', async (req, res, next) => {
     let id = req.params.id
     let payload = new Payload(req)
-    payload.setPath(links.user.id)
+    payload.setPath(links(id).user.id)
     try {
       let data = await getUserById(id)
       let user = getUserData(data)

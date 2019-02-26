@@ -2,17 +2,13 @@ require('dotenv').config()
 
 let url = process.env.URL
 
-function setUrl (newUrl) {
-  url = newUrl
-  return url
-}
-const links = {
+const links = (id = ':id') => ({
   methods: [],
   auth: {
     methods: [
       {
         rel: 'create',
-        href: url + '/auth`',
+        href: url + '/auth',
         type: 'POST',
         param: ['username', 'password']
       }
@@ -35,17 +31,17 @@ const links = {
       methods: [
         {
           rel: 'list.specific',
-          href: url + '/fish/:id',
+          href: url + '/fish/' + id,
           type: 'GET'
         },
         {
           rel: 'update.specific',
-          href: url + '/fish/:id',
+          href: url + '/fish/' + id,
           type: 'PUT'
         },
         {
           rel: 'delete.specific',
-          href: url + '/fish/:id',
+          href: url + '/fish/' + id,
           type: 'DELETE'
         }
       ]
@@ -56,7 +52,7 @@ const links = {
         method: [
           {
             rel: 'list',
-            href: url + '/fish/:id/user',
+            href: url + '/fish/' + id + '/user',
             type: 'GET'
           }
         ]
@@ -80,7 +76,7 @@ const links = {
     id: {
       method: {
         rel: 'list.specific',
-        href: url + '/user/:id',
+        href: url + '/user/' + id,
         type: 'GET'
       }
     }
@@ -97,17 +93,17 @@ const links = {
       methods: [
         {
           rel: 'list',
-          href: url + '/webhook/:id',
+          href: url + '/webhook/' + id,
           type: 'GET'
         },
         {
           rel: 'edit',
-          href: url + '/webhook/:id',
+          href: url + '/webhook/' + id,
           type: 'PUT'
         },
         {
           rel: 'delete',
-          href: url + '/webhook/:id',
+          href: url + '/webhook/' + id,
           type: 'DELETE'
         }
       ]
@@ -118,15 +114,14 @@ const links = {
         methods: [
           {
             rel: 'list',
-            href: url + '/webhook/user/:id',
+            href: url + '/webhook/user/' + id,
             type: 'GET'
           }
         ]
       }
     }
   }
-}
+})
 module.exports = {
-  links,
-  setUrl
+  links
 }

@@ -1,7 +1,7 @@
 let { readToken } = require('../model/authentication')
 let { getFishData, getFishesData } = require('../model/utility')
 let { sendWebhook } = require('../model/request')
-let links = require('../utils/links')
+let { links } = require('../utils/links')
 let { saveFish, getFishesByUserId, getAllFishes, updateFishById, getFishById, deleteFishById } = require('../model/database')
 let { mongooseErrorHandling } = require('../model/errorHandling')
 const Payload = require('../utils/Payload')
@@ -9,7 +9,7 @@ const Payload = require('../utils/Payload')
 module.exports = (server) => {
   server.get('/fish', async (req, res, next) => {
     let payload = new Payload(req)
-    payload.setPath(links.fish)
+    payload.setPath(links().fish)
     try {
       let data = await getAllFishes()
       let fishes = getFishesData(data)
@@ -24,7 +24,7 @@ module.exports = (server) => {
   })
   server.post('/fish', async (req, res, next) => {
     let payload = new Payload(req)
-    payload.setPath(links.fish)
+    payload.setPath(links().fish)
     let data = readToken(req.headers.authorization)
     let fish = getFishData(req.body)
     fish.username = data.username
@@ -44,9 +44,9 @@ module.exports = (server) => {
 
   server.get('/fish/:id', async (req, res, next) => {
     let payload = new Payload(req)
-    payload.setPath(links.fish.id)
     try {
       let id = req.params.id
+      payload.setPath(links(id).fish.id)
       let fishFromDb = await getFishById(id)
       let fish = getFishData(fishFromDb)
       fish.username = fishFromDb.username
@@ -63,10 +63,10 @@ module.exports = (server) => {
 
   server.put('/fish/:id', async (req, res, next) => {
     let payload = new Payload(req)
-    payload.setPath(links.fish.id)
     try {
       let newFish = req.body
       let id = req.params.id
+      payload.setPath(links(id).fish.id)
       let token = readToken(req.headers.authorization)
       let oldFish = await getFishById(id)
       if (oldFish.userId === token.id) {
@@ -88,9 +88,9 @@ module.exports = (server) => {
 
   server.del('/fish/:id', async (req, res, next) => {
     let payload = new Payload(req)
-    payload.setPath(links.fish.id)
     try {
       let id = req.params.id
+      payload.setPath(links(id).fish.id)
       let token = readToken(req.headers.authorization)
       let fish = await getFishById(id)
       if (fish.userId === token.id) {
@@ -113,9 +113,9 @@ module.exports = (server) => {
   // Fish by user
   server.get('/fish/user/:id', async (req, res, next) => {
     let payload = new Payload(req)
-    payload.setPath(links.fish.user.id)
     try {
       let id = req.params.id
+      payload.setPath(links(id).fish.user.id)
       let fishes = await getFishesByUserId(id)
       payload.setData(fishes)
       res.send(payload)

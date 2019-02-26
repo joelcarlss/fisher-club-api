@@ -1,11 +1,11 @@
 const { authenticateUser } = require('../model/authentication')
 const Payload = require('../utils/Payload')
-let { auth } = require('../utils/links')
+let { links } = require('../utils/links')
 
 module.exports = (server) => {
   server.post('/auth', async (req, res, next) => {
     let payload = new Payload(req)
-    payload.setPath(auth)
+    payload.setPath(links().auth)
     let {username, password} = req.body
     try {
       let token = await authenticateUser(username, password)
