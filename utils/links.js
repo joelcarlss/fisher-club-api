@@ -74,7 +74,7 @@ const links = (id = ':id') => ({
       }
     ],
     id: {
-      method: {
+      methods: {
         rel: 'list.specific',
         href: url + '/user/' + id,
         type: 'GET'
@@ -84,7 +84,7 @@ const links = (id = ':id') => ({
   webhook: {
     methods: [
       {
-        rel: 'list',
+        rel: 'add',
         href: url + '/webhook',
         type: 'POST'
       }

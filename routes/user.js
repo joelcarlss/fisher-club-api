@@ -37,7 +37,7 @@ module.exports = (server) => {
       let user = await createUser(username, password)
       payload.setData(user)
       payload.setMessage('User created')
-      res.send(payload)
+      res.send(201, payload)
     } catch (e) {
       let error = mongooseErrorHandling(e)
       payload.setMessage(error.message)

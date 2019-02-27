@@ -71,8 +71,8 @@ async function getWebhooksByUserId (userId) {
 }
 
 async function getWebhookById (id) {
-  let hooks = await Webhook.findOne({ id })
-  return hooks
+  let hook = await Webhook.findOne({ _id: id })
+  return hook
 }
 
 async function updateWebhookById (id, hook) {
@@ -81,7 +81,7 @@ async function updateWebhookById (id, hook) {
 }
 
 async function deleteWebhookById (id) {
-  let result = await Webhook.findOneAndDelete({id})
+  let result = await Webhook.findOneAndDelete({ _id: id })
   return result
 }
 

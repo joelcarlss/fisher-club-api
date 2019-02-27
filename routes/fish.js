@@ -34,7 +34,7 @@ module.exports = (server) => {
       sendWebhook(fish)
       payload.setData(save)
       payload.setMessage('Sucessfully saved to database')
-      res.send(payload)
+      res.send(201, payload)
     } catch (e) {
       let error = mongooseErrorHandling(e)
       res.send(error.code, error.message)
