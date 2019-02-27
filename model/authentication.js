@@ -22,7 +22,6 @@ async function authenticateUser (username, password) {
     })
     return token
   } catch (error) {
-    console.log(error)
     throw new Error('Username or password is incorrect')
   }
 }

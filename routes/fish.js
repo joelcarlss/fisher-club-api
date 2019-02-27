@@ -122,7 +122,7 @@ module.exports = (server) => {
         res.send(payload)
       } else {
         payload.setMessage('No fishes found')
-        res.send(400, payload)
+        res.send(404, payload)
       }
     } catch (e) {
       let error = mongooseErrorHandling(e)
