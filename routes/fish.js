@@ -104,7 +104,7 @@ module.exports = (server) => {
       }
     } catch (e) {
       let error = mongooseErrorHandling(e)
-      payload.message(error.message)
+      payload.setMessage(error.message)
       res.send(error.code, payload)
     }
     next()
@@ -117,8 +117,13 @@ module.exports = (server) => {
       let id = req.params.id
       payload.setPath(links(id).fish.user.id)
       let fishes = await getFishesByUserId(id)
-      payload.setData(fishes)
-      res.send(payload)
+      if (fishes.length > 0) {
+        payload.setData(fishes)
+        res.send(payload)
+      } else {
+        payload.setMessage('No fishes found')
+        res.send(400, payload)
+      }
     } catch (e) {
       let error = mongooseErrorHandling(e)
       payload.setMessage(error.message)

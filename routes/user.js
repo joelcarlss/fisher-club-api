@@ -1,3 +1,4 @@
+let { readToken } = require('../model/authentication')
 let { getAllUsers, getUserById } = require('../model/database')
 let { getUsersData, getUserData } = require('../model/utility')
 let { mongooseErrorHandling } = require('../model/errorHandling')
@@ -8,15 +9,22 @@ const Payload = require('../utils/Payload')
 module.exports = (server) => {
   server.get('/user', async (req, res, next) => {
     let payload = new Payload(req)
-    payload.setPath(links.user)
+    payload.setPath(links().user)
     try {
+      readToken(req.headers.authorization)
       let result = await getAllUsers()
       let users = getUsersData(result)
       payload.setData(users)
       res.send(payload)
     } catch (e) {
-      let error = mongooseErrorHandling(e)
-      res.send(error.status, error.message)
+      if (e.name === 'TypeError') {
+        payload.setMessage('Not Authorized')
+        res.send(401, payload)
+      } else {
+        let error = mongooseErrorHandling(e)
+        payload.setMessage(e.message)
+        res.send(error.status, payload)
+      }
     }
     next()
   })

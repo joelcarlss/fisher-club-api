@@ -52,7 +52,7 @@ const links = (id = ':id') => ({
         method: [
           {
             rel: 'list',
-            href: url + '/fish/' + id + '/user',
+            href: url + '/fish/user/' + id,
             type: 'GET'
           }
         ]
