@@ -1,0 +1,2372 @@
+{
+	"info": {
+		"_postman_id": "0b254848-26b7-454d-a6ef-6bf3c87298ee",
+		"name": "API",
+		"description": "Walkthrough",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "200",
+			"item": [
+				{
+					"name": "Connect to API",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "1d262916-84dd-4ec3-9e4c-856377a46e2c",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{url}}/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								""
+							]
+						},
+						"description": "Opening the first"
+					},
+					"response": []
+				},
+				{
+					"name": "Create User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "025d1464-2ca3-401e-b3ca-9e333bac6a1e",
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "a88f86e9-7937-48e3-b84c-f37c719c019b",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "username",
+									"value": "{{username}}",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "{{password}}",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/user",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "c3714cea-cf4a-4bc8-9721-5af394f6b9d0",
+								"exec": [
+									"var data = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"token\", data.payload.token);",
+									"",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "username",
+									"value": "kayakmicke",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "asdasdasd",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/auth",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"auth"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all users",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "919d083f-1dfc-4605-b1ff-637af2cb1f2e",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{url}}/user",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get user by id",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "9f10a852-af77-4c67-a54d-3f4395358e90",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{url}}/user/{{userId}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"user",
+								"{{userId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all fishes",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "a4d33567-b787-430d-9b35-bfc616a6c8e1",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{url}}/fish",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"fish"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Fish",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "b93cc202-91aa-443e-a824-f9a94e7cb33e",
+								"exec": [
+									"var data = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"id\", data.payload.data._id)",
+									"postman.setEnvironmentVariable(\"userId\", data.payload.data.userId)",
+									"",
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "longitude",
+									"value": "51°23'10.2\"N",
+									"type": "text"
+								},
+								{
+									"key": "latitude",
+									"value": "30°06'49.8\"E",
+									"description": " ",
+									"type": "text"
+								},
+								{
+									"key": "species",
+									"value": "Tornado Jellyfish",
+									"type": "text"
+								},
+								{
+									"key": "weight",
+									"value": "5000",
+									"type": "text"
+								},
+								{
+									"key": "length",
+									"value": "1200",
+									"type": "text"
+								},
+								{
+									"key": "image",
+									"value": "https://upload.wikimedia.org/wikipedia/commons/2/22/Largelionsmanejellyfish.jpg",
+									"type": "text"
+								},
+								{
+									"key": "time",
+									"value": "1931",
+									"type": "text"
+								},
+								{
+									"key": "day",
+									"value": "190225",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/fish",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"fish"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get fish by id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "5977f8f4-57b1-43ea-b73b-f1e73879d758",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{url}}/fish/{{id}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"fish",
+								"{{id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update fish by id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "1c55e494-8625-47b8-92b1-9d82cc80da3b",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "length",
+									"value": "3000",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/fish/{{id}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"fish",
+								"{{id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete fish by id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "9bde2dc5-3e6a-48e6-9ebc-d5681db921ec",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"type": "text"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "{{url}}/fish/{{id}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"fish",
+								"{{id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all fishes from a user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "f63f456c-39bf-4012-8f62-c3f887aa74e0",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"type": "text"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "{{url}}/fish/user/{{userId}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"fish",
+								"user",
+								"{{userId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Webhook",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "a31fe1a7-937f-4ed9-b670-2e4cc505f0e6",
+								"exec": [
+									"var data = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"hookId\", data.payload.data._id);",
+									"",
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "url",
+									"value": "https://webhook.site/c5185a49-4f36-497f-abec-7517dd4619f8",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/webhook",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"webhook"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Webhook Copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "a31fe1a7-937f-4ed9-b670-2e4cc505f0e6",
+								"exec": [
+									"var data = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"hookId\", data.payload.data._id);",
+									"",
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "url",
+									"value": "https://webhook.site/c5185a49-4f36-497f-abec-7517dd4619f8",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/webhook",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"webhook"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Webhook by id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "85e70177-d9e2-4f15-b892-0974de1df909",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{url}}/webhook/{{hookId}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"webhook",
+								"{{hookId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit Webhook by id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "f083b892-d665-444e-8fbb-f624ba31f7eb",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{url}}/webhook/{{hookId}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"webhook",
+								"{{hookId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Webhooks by user id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "d1f5b846-ac56-4f96-b2f1-912289cf1573",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{url}}/webhook/user/{{userId}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"webhook",
+								"user",
+								"{{userId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Webhook by id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "c354cbe6-385d-4751-bbe3-f3882a97b1eb",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{url}}/webhook/{{hookId}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"webhook",
+								"{{hookId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Errors",
+			"item": [
+				{
+					"name": "Create User Existing User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "025d1464-2ca3-401e-b3ca-9e333bac6a1e",
+								"exec": [
+									"pm.test(\"Status code is 409\", function () {",
+									"    pm.response.to.have.status(409);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "username",
+									"value": "{{username}}",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "{{password}}",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/user",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login wrong username",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "822439b8-d2bf-4347-8291-b8a25d073465",
+								"exec": [
+									"pm.test(\"Status code is 403\", function () {",
+									"    pm.response.to.have.status(403);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "username",
+									"value": "osdfgrph",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "asdasdasd",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/auth",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"auth"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login wrong password",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "a9d377fe-973d-43c1-8b55-152c06534746",
+								"exec": [
+									"pm.test(\"Status code is 403\", function () {",
+									"    pm.response.to.have.status(403);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "username",
+									"value": "kayakMicke",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "kjdkjdkjd",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/auth",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"auth"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login no credentials",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "6c20e05f-985c-4203-9888-293f4f64f9f3",
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{url}}/auth",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"auth"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "c3714cea-cf4a-4bc8-9721-5af394f6b9d0",
+								"exec": [
+									"var data = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"token\", data.payload.token);",
+									"",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "username",
+									"value": "kayakmicke",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "asdasdasd",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/auth",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"auth"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get user by id Wrong id",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "eecdc5d6-b3cc-4a1b-9ed9-ba8a9f24331f",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "ec44c9a3-68de-4286-b287-8e7fe59b21d7",
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {",
+									"    pm.response.to.have.status(404);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{url}}/user/asdf123",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"user",
+								"asdf123"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Fish Missing Data",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "b93cc202-91aa-443e-a824-f9a94e7cb33e",
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "longitude",
+									"value": "51°23'10.2\"N",
+									"type": "text"
+								},
+								{
+									"key": "latitude",
+									"value": "30°06'49.8\"E",
+									"description": " ",
+									"type": "text"
+								},
+								{
+									"key": "species",
+									"value": "Tornado Jellyfish",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "weight",
+									"value": "5000",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "length",
+									"value": "1200",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "image",
+									"value": "https://upload.wikimedia.org/wikipedia/commons/2/22/Largelionsmanejellyfish.jpg",
+									"type": "text"
+								},
+								{
+									"key": "time",
+									"value": "1931",
+									"type": "text"
+								},
+								{
+									"key": "day",
+									"value": "190225",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/fish",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"fish"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get fish by id Wrong id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "5306fa44-af0f-4705-bf74-8ea33b463175",
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {",
+									"    pm.response.to.have.status(404);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{url}}/fish/asdf23",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"fish",
+								"asdf23"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update fish by id Wrong id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "316e8699-f42f-4d61-bb73-9d20a743b0c2",
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {",
+									"    pm.response.to.have.status(404);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "length",
+									"value": "3000",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/fish/87hj",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"fish",
+								"87hj"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete fish by id Wrong id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "97c76fd4-e75c-40df-b25c-eae9b9ad366a",
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {",
+									"    pm.response.to.have.status(404);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "{{url}}/fish/9kn7bhy6b09",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"fish",
+								"9kn7bhy6b09"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all fishes from a user Wrong Id",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "35ce44c2-b4f4-4cb7-81b5-cdaa2878795e",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "a8b27d95-5b71-45a4-886f-0cca4aa1af45",
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {",
+									"    pm.response.to.have.status(404);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "{{url}}/fish/user/6gnbh",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"fish",
+								"user",
+								"6gnbh"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Webhook No URL",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "a31fe1a7-937f-4ed9-b670-2e4cc505f0e6",
+								"exec": [
+									"var data = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"hookId\", data.payload.data._id);",
+									"",
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "url",
+									"value": "https://webhook.site/c5185a49-4f36-497f-abec-7517dd4619f8",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/webhook",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"webhook"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Webhook by id Wrong id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "a31fe1a7-937f-4ed9-b670-2e4cc505f0e6",
+								"exec": [
+									"var data = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"hookId\", data.payload.data._id);",
+									"",
+									"pm.test(\"Status code is 404\", function () {",
+									"    pm.response.to.have.status(404);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "url",
+									"value": "https://webhook.site/c5185a49-4f36-497f-abec-7517dd4619f8",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/webhook/wrongId",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"webhook",
+								"wrongId"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit Webhook by id Wrong id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "f083b892-d665-444e-8fbb-f624ba31f7eb",
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {",
+									"    pm.response.to.have.status(404);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"type": "text"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "{{url}}/webhook/wrongId",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"webhook",
+								"wrongId"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Webhook by id Copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "c354cbe6-385d-4751-bbe3-f3882a97b1eb",
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {",
+									"    pm.response.to.have.status(404);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{url}}/webhook/NotAnId",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"webhook",
+								"NotAnId"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Webhooks by user id Wrong id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "d1f5b846-ac56-4f96-b2f1-912289cf1573",
+								"exec": [
+									"pm.test(\"Status code is 403\", function () {",
+									"    pm.response.to.have.status(403);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{url}}/webhook/user/thisIsNotAUserId",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"webhook",
+								"user",
+								"thisIsNotAUserId"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete all users",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "df4d49da-7340-43f3-8889-3c1595210dbb",
+								"exec": [
+									"pm.test(\"Status code is 405\", function () {",
+									"    pm.response.to.have.status(405);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{url}}/user",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"user"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "No Authentication",
+			"item": [
+				{
+					"name": "Get all users",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "9bb446df-8aa2-4808-a19b-872c5491e7a8",
+								"exec": [
+									"pm.test(\"Status code is 401\", function () {",
+									"    pm.response.to.have.status(401);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{url}}/user",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get user by id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "1c0528be-5adf-4e74-a833-a838ab2192d7",
+								"exec": [
+									"pm.test(\"Status code is 401\", function () {",
+									"    pm.response.to.have.status(401);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{url}}/user/{{userId}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"user",
+								"{{userId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all fishes",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "c1df7978-eb21-4e9b-8109-078117c5ceb5",
+								"exec": [
+									"pm.test(\"Status code is 401\", function () {",
+									"    pm.response.to.have.status(401);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{url}}/fish",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"fish"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Fish",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "b93cc202-91aa-443e-a824-f9a94e7cb33e",
+								"exec": [
+									"pm.test(\"Status code is 401\", function () {",
+									"    pm.response.to.have.status(401);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "longitude",
+									"value": "51°23'10.2\"N",
+									"type": "text"
+								},
+								{
+									"key": "latitude",
+									"value": "30°06'49.8\"E",
+									"description": " ",
+									"type": "text"
+								},
+								{
+									"key": "species",
+									"value": "Tornado Jellyfish",
+									"type": "text"
+								},
+								{
+									"key": "weight",
+									"value": "5000",
+									"type": "text"
+								},
+								{
+									"key": "length",
+									"value": "1200",
+									"type": "text"
+								},
+								{
+									"key": "image",
+									"value": "https://upload.wikimedia.org/wikipedia/commons/2/22/Largelionsmanejellyfish.jpg",
+									"type": "text"
+								},
+								{
+									"key": "time",
+									"value": "1931",
+									"type": "text"
+								},
+								{
+									"key": "day",
+									"value": "190225",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/fish",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"fish"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get fish by id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "bf4a23c6-5ea9-4fb8-a26a-c49275827bf4",
+								"exec": [
+									"pm.test(\"Status code is 401\", function () {",
+									"    pm.response.to.have.status(401);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{url}}/fish/{{id}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"fish",
+								"{{id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update fish by id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "d2555596-9cb2-4e1f-99ec-36305f687897",
+								"exec": [
+									"pm.test(\"Status code is 401\", function () {",
+									"    pm.response.to.have.status(401);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "length",
+									"value": "3000",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/fish/{{id}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"fish",
+								"{{id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete fish by id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "958cc25f-603c-4d61-af36-7e9965efec06",
+								"exec": [
+									"pm.test(\"Status code is 401\", function () {",
+									"    pm.response.to.have.status(401);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "{{url}}/fish/{{id}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"fish",
+								"{{id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all fishes from a user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "1794362f-a548-4989-92df-8e9ea89d506f",
+								"exec": [
+									"pm.test(\"Status code is 401\", function () {",
+									"    pm.response.to.have.status(401);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "{{url}}/fish/user/{{userId}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"fish",
+								"user",
+								"{{userId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Webhook by id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "85e70177-d9e2-4f15-b892-0974de1df909",
+								"exec": [
+									"pm.test(\"Status code is 401\", function () {",
+									"    pm.response.to.have.status(401);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{url}}/webhook/{{hookId}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"webhook",
+								"{{hookId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit Webhook by id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "f083b892-d665-444e-8fbb-f624ba31f7eb",
+								"exec": [
+									"pm.test(\"Status code is 401\", function () {",
+									"    pm.response.to.have.status(401);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{url}}/webhook/{{hookId}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"webhook",
+								"{{hookId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Webhooks by user id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "d1f5b846-ac56-4f96-b2f1-912289cf1573",
+								"exec": [
+									"pm.test(\"Status code is 401\", function () {",
+									"    pm.response.to.have.status(401);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{url}}/webhook/user/{{userId}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"webhook",
+								"user",
+								"{{userId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Webhook by id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "c354cbe6-385d-4751-bbe3-f3882a97b1eb",
+								"exec": [
+									"pm.test(\"Status code is 401\", function () {",
+									"    pm.response.to.have.status(401);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{url}}/webhook/{{hookId}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"webhook",
+								"{{hookId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
