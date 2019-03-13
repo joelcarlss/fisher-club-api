@@ -1,10 +1,10 @@
-let { getFish } = require('../model/utility')
+let { getFishData } = require('../model/utility')
 let { getAllWebhooks } = require('../model/database')
 var request = require('request')
 
 module.exports = {
   async sendWebhook (data) {
-    let fish = getFish(data)
+    let fish = getFishData(data)
     fish.username = data.username
     sendDataToAllWebhooks(data)
   }
