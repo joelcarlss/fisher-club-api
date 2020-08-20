@@ -18,7 +18,7 @@
   },
   "homepage": "https://github.com/joelcarlss/RESTAPI#readme",
   "dependencies": {
-    "bcrypt": "^3.0.4",
+    "bcrypt": "^5.0.0",
     "body-parser": "^1.18.3",
     "dotenv": "latest",
     "jsonwebtoken": "^8.5.0",
